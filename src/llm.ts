@@ -40,6 +40,13 @@ export async function getLLM(): Promise<BaseChatModel> {
   //   configuration: { baseURL: LLM_BASE_URL },
   // });
 
+  return new ChatOpenAI({
+    model: process.env.GROQ_MODEL,
+    apiKey: process.env.GROQ_API_KEY,
+    temperature: 0,
+    configuration: { baseURL: LLM_BASE_URL },
+  });
+
   // return new ChatGoogleGenerativeAI({
   //   model: LLM_MODEL || "gemini-flash-latest", // e.g. "gemini-flash-latest"
   //   apiKey: LLM_API_KEY, // <key>
@@ -47,11 +54,11 @@ export async function getLLM(): Promise<BaseChatModel> {
   //   maxRetries: 3,
   // });
 
-  return new ChatGoogleGenerativeAI({
-    model: LLM_MODEL || "gemini-flash-latest", // e.g. "gemini-flash-latest", "gemini-2.5-flash-lite"
-    apiKey: LLM_API_KEY, // <key>
-    temperature: 0,
-    maxRetries: 3,
-    // ...(LLM_BASE_URL ? { baseUrl: LLM_BASE_URL } : {}), // only for a custom gateway
-  });
+  // return new ChatGoogleGenerativeAI({
+  //   model: LLM_MODEL || "gemini-flash-latest", // e.g. "gemini-flash-latest", "gemini-2.5-flash-lite"
+  //   apiKey: LLM_API_KEY, // <key>
+  //   temperature: 0,
+  //   maxRetries: 3,
+  //   // ...(LLM_BASE_URL ? { baseUrl: LLM_BASE_URL } : {}), // only for a custom gateway
+  // });
 }

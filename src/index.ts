@@ -28,19 +28,30 @@ async function run(query: string) {
     }
 
     // knowledge retrieval: call the knowledge retrieval agent with the query and classification result
-    // const res = await fetch(process.env.KNOWLEDGE_RETRIEVAL_AGENT_URL, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     query: query,
-    //     category: classificationResult.category,
-    //     domain: classificationResult.category === "incident" ? "IT" : "non-IT",
-    //   }),
-    // });
-    // const { result } = await res.json();
+    let headersList = {
+      Accept: "*/*",
+      "Content-Type": "application/json",
+    };
+
+    let bodyContent = JSON.stringify({
+      category: classificationResult.category,
+      domain: classificationResult.category === "incident" ? "IT" : "non-IT",
+      request: query,
+      confidence: 0.9,
+      original_request: query,
+    });
+
+    let response = await fetch(process.env.KNOWLEDGE_RETRIEVAL_AGENT_URL, {
+      method: "POST",
+      body: bodyContent,
+      headers: headersList,
+    });
+
+    let result = await response.json();
+    // console.log("Knowledge retrieval result:", JSON.stringify(result, null, 2));
 
     // knowledge delivery: format the response for the user
-    const reply = await formatResponse(query, classificationResult);
+    const reply = await formatResponse(query, result.knowledge_retrieval);
     // return reply;
     console.log(JSON.stringify(reply, null, 2));
   } catch (err) {
