@@ -1,0 +1,35 @@
+{
+  "agent": "agent2",
+  "classification": {
+    "category": "change",
+    "domain": "it",
+    "confidence": 0.97,
+    "request": "Install new software",
+    "original_request": "I need new software installed"
+  },
+  "knowledge_retrieval": {
+    "category": "change",
+    "domain": "it",
+    "original_request": "I need new software installed",
+    "threshold": 0.75,
+    "score_type": "hybrid_semantic_keyword",
+    "status": "match",
+    "escalation_required": false,
+    "message": "Relevant knowledge articles found.",
+    "results": [
+      {
+        "article_id": "CHG001",
+        "category": "change",
+        "domain": "it",
+        "title": "Request for software installation",
+        "description": "A user needs approved software installed on their work laptop or workstation.",
+        "resolution": "Submit a software installation change request with the application name, business justification, and device details. Obtain the required approvals before installation.",
+        "score": 0.95,
+        "is_match": true
+      }
+    ],
+    "matched_article_ids": [
+      "CHG001"
+    ]
+  }
+}
