@@ -1,46 +1,53 @@
 {
     "agent": "agent2",
     "classification": {
-        "category": "incident",
-        "domain": "IT",
+        "category": "change",
+        "domain": "non-it",
         "confidence": 0.9,
-        "request": "My VPN keeps disconnecting repeatedly.",
-        "original_request": "My VPN keeps disconnecting repeatedly."
+        "request": "Please upgrade the production Postgres cluster from v14 to v16 this Saturday night.",
+        "original_request": "Please upgrade the production Postgres cluster from v14 to v16 this Saturday night."
     },
     "knowledge_retrieval": {
-        "category": "incident",
-        "domain": "it",
-        "original_request": "My VPN keeps disconnecting repeatedly.",
+        "category": "change",
+        "domain": "non-it",
+        "original_request": "Please upgrade the production Postgres cluster from v14 to v16 this Saturday night.",
         "threshold": 0.75,
         "score_type": "hybrid_semantic_keyword",
-        "status": "match",
-        "escalation_required": false,
-        "message": "Relevant knowledge articles found.",
+        "status": "no_match",
+        "escalation_required": true,
+        "message": "No result met the matching threshold. Escalation may be required.",
         "results": [
             {
-                "article_id": "INC001",
-                "category": "incident",
-                "domain": "it",
-                "title": "VPN connection drops frequently",
-                "description": "The corporate VPN disconnects every few minutes or loses connection repeatedly.",
-                "resolution": "Check internet stability, reconnect to the corporate VPN, and verify that the approved VPN client is updated. If the issue persists, escalate to the network support team.",
-                "score": 0.87,
-                "is_match": true
+                "article_id": "CHG006",
+                "category": "change",
+                "domain": "non-it",
+                "title": "Facilities maintenance change request",
+                "description": "A department requests planned maintenance or a modification to office facilities, such as lighting, air conditioning, or meeting-room equipment.",
+                "resolution": "Submit a facilities change request describing the work, location, expected impact, preferred schedule, and safety considerations. Obtain facilities approval before implementation.",
+                "score": 0.089,
+                "is_match": false
             },
             {
-                "article_id": "INC003",
-                "category": "incident",
-                "domain": "it",
-                "title": "Laptop running slowly",
-                "description": "The employee's laptop performance is very slow, applications respond slowly, or the device freezes.",
-                "resolution": "Restart the laptop, close unnecessary applications, and check available disk space. Contact IT support if the issue continues.",
-                "score": 0.83,
-                "is_match": true
+                "article_id": "CHG004",
+                "category": "change",
+                "domain": "non-it",
+                "title": "Office layout change request",
+                "description": "A team requests a change to desk layout, seating arrangements, or shared office space.",
+                "resolution": "Submit a workplace change request describing the requested layout, affected area, business reason, and preferred timing. Obtain facilities and management approval before work begins.",
+                "score": 0.045,
+                "is_match": false
+            },
+            {
+                "article_id": "CHG005",
+                "category": "change",
+                "domain": "non-it",
+                "title": "Office access or badge arrangement change",
+                "description": "An employee requests an approved change to physical office access, access-card assignment, or entry arrangements.",
+                "resolution": "Submit a request to the authorized facilities or security team with employee details, location, requested access, and business justification. Obtain required approvals before making changes.",
+                "score": 0.006,
+                "is_match": false
             }
         ],
-        "matched_article_ids": [
-            "INC001",
-            "INC003"
-        ]
+        "matched_article_ids": []
     }
 }
