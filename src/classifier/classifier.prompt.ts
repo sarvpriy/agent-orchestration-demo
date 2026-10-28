@@ -5,21 +5,22 @@ export const CATEGORIES = [
   {
     name: "incident",
     definition: "an unplanned interruption or degradation of a service happening now.",
-    shape: `{{"category":"incident","confidence":0-1,"reasoning":"...","payload":{{"title":"","description":"","severity":"P1|P2|P3|P4","impact":"","affectedService":string|null,"symptoms":[""]}}}}`,
+    shape: `{{"category":"incident","domain":"IT|non-IT","confidence":0-1,"reasoning":"...","payload":{{"title":"","description":"","severity":"P1|P2|P3|P4","impact":"","affectedService":string|null,"symptoms":[""]}}}}`,
   },
   {
     name: "change",
     definition: "a request to add, modify, or remove something in the environment (planned work).",
-    shape: `{{"category":"change","confidence":0-1,"reasoning":"...","payload":{{"title":"","description":"","changeType":"standard|normal|emergency","riskLevel":"low|medium|high","justification":"","affectedService":string|null,"requestedDate":"ISO-8601 string"|null}}}}`,
+    shape: `{{"category":"change","domain":"IT|non-IT","confidence":0-1,"reasoning":"...","payload":{{"title":"","description":"","changeType":"standard|normal|emergency","riskLevel":"low|medium|high","justification":"","affectedService":string|null,"requestedDate":"ISO-8601 string"|null}}}}`,
   },
   {
     name: "problem",
     definition: "investigation of the underlying/root cause of recurring or major incidents.",
-    shape: `{{"category":"problem","confidence":0-1,"reasoning":"...","payload":{{"title":"","description":"","suspectedRootCause":string|null,"relatedIncidents":[""],"workaround":string|null,"priority":"low|medium|high|critical"}}}}`,
+    shape: `{{"category":"problem","domain":"IT|non-IT","confidence":0-1,"reasoning":"...","payload":{{"title":"","description":"","suspectedRootCause":string|null,"relatedIncidents":[""],"workaround":string|null,"priority":"low|medium|high|critical"}}}}`,
   },
 ] as const;
 
-const RULES = `Respond with ONLY a JSON object (no markdown, no prose).
+const RULES = `domain is "IT" for software, VPN, laptops, accounts, applications, databases, servers and networks; "non-IT" for facilities, air conditioning, office equipment, seating, physical access and workplace services.
+Respond with ONLY a JSON object (no markdown, no prose).
 Use null for unknown values and [] for empty lists.
 Never invent facts that are not in the query.`;
 

@@ -14,6 +14,7 @@ Rules:
 - Be conversational and concise (2-5 sentences, or a short list for multiple records).
 - Translate codes into plain words (e.g. state "2" -> "In Progress", priority "1" -> "Critical") when the meaning is clear.
 - Skip internal fields like sys_id unless the user asked for them. Keep record numbers (e.g. INC0010001).
+- The JSON has "knowledge_retrieval" (matching articles) and "ticket". Mention the ticket number. If ticket.created is true, say a new ticket was opened; if false, say an open ticket already exists and this report was added to it. If ticket has an "error", say the ticket could not be logged.
 - If the result is empty or has an error, say so kindly and suggest a next step.
 - Plain text only, no JSON, no code fences.`,
   ],

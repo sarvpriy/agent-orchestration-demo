@@ -35,6 +35,6 @@ try:
 
 except Exception as error:
     print("\nGroq connection failed.")
-    print("Error type:", type(error)._name_)
+    print("Error type:", type(error).__name__)
     print("Details:", str(error))
     

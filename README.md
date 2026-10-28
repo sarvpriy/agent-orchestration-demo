@@ -1,5 +1,18 @@
 # Agent orchestration demo
 
+## Quick start
+
+```bash
+./run.sh setup              # venv + Python deps + npm install + build + creates .env
+# edit .env and set GROQ_API_KEY
+./run.sh all "My VPN keeps disconnecting repeatedly."   # API + workflow, one shot
+```
+
+Other commands: `./run.sh api` (API only), `./run.sh app ["query"]` (workflow only; API must be running),
+`./run.sh test` (self-test with a mock LLM, no API key needed), `./run.sh stop`.
+Set `PORT=` to change the API port. The first API start downloads the `all-MiniLM-L6-v2` model
+from huggingface.co (needs network access to it).
+
 ## Knowledge Retrieval Agent (Agent 2)
 
 ### How to Run
@@ -10,23 +23,17 @@
 
 ### Install Python Dependencies
 
-Activate the virtual environment:
+Create and activate the virtual environment:
 
 ```bash
-source .venv\Scripts\activate
+python3 -m venv .venv
+source .venv/bin/activate      # Windows: .venv\Scripts\activate
 ```
 
-If .venv doesn’t exist yet, create it first:
+Install the required dependencies:
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-Install the required dependencies: If python isn’t found after activating, use python3 instead.
-
-```bash
-python -m pip install fastapi uvicorn sentence-transformers python-dotenv groq scikit-learn
+python -m pip install -r requirements.txt
 ```
 
 ### Start the Knowledge Retrieval Agent API
@@ -76,6 +83,29 @@ Request body:
 
 The response includes the classification details, retrieval status, matching article IDs, relevance scores, resolutions, and escalation decision.
 
+## Ticket management
+
+Every classified request goes through a ticket step (`manage_ticket` in the workflow graph) after knowledge
+retrieval. If a similar **open** ticket (same category and domain) already exists, the report is attached to it
+(`occurrences` +1, history entry). Otherwise a new ticket is created: `INC0000001`, `CHG0000001`, `PRB0000001`.
+The reply mentions the ticket number. If the ticket service fails, the knowledge answer is still returned and the
+reply says the ticket could not be logged.
+
+Similarity is `0.7 * semantic + 0.3 * keyword`, reusing the retrieval model; an identical request always matches.
+Threshold: `TICKET_DUP_THRESHOLD` (default `0.80`; tune it against real traffic). Resolved and closed tickets are never reused.
+
+Tickets live in SQLite at `data/tickets.db` (override with `TICKETS_DB`; git-ignored).
+
+| Endpoint | Purpose |
+| --- | --- |
+| `POST /tickets/find-or-create` | Attach to a similar open ticket, or create (201 new, 200 existing) |
+| `POST /tickets` | Create without the duplicate check |
+| `GET /tickets?status=&category=&domain=` | List tickets |
+| `GET /tickets/{number}` | One ticket with its event history |
+| `PATCH /tickets/{number}` | Update `status`, `assignee`, `resolution`, `comment` |
+
+Lifecycle: `open` <-> `in_progress` -> `resolved` (needs a resolution) -> `closed` (final); `resolved` can reopen.
+
 ### Knowledge Retrieval Workflow
 
 1. Receive the request category, domain, and query.
@@ -114,7 +144,7 @@ data/agent2_output.json
 
 ### How to run full workflow
 
-- make sure the llm keys are added in the environment.
+- copy `env.example` to `.env` and set `GROQ_API_KEY` (the classifier reads `GROQ_API_KEY` / `GROQ_MODEL`).
 - make sure that Knowledge retrival agent service is running
 
 install node dependecies using

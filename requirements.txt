@@ -1,0 +1,7 @@
+fastapi>=0.110
+uvicorn>=0.29
+sentence-transformers>=3.0
+python-dotenv>=1.0
+groq>=0.9
+scikit-learn>=1.4
+langchain-groq>=0.2  # only needed for app.py (Groq connection check)
