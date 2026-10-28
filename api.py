@@ -7,6 +7,8 @@ from pydantic import BaseModel, Field
 from sentence_transformers import SentenceTransformer
 
 import agent2
+import tickets
+from tickets_api import router as tickets_router
 
 
 # Load the knowledge base and embedding model once when the API starts.
@@ -15,6 +17,7 @@ async def lifespan(app: FastAPI):
     try:
         app.state.articles = agent2.load_knowledge_base()
         app.state.model = SentenceTransformer("all-MiniLM-L6-v2")
+        app.state.tickets = tickets.TicketStore()
         yield
     except Exception as exc:
         raise RuntimeError(
@@ -28,6 +31,8 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+app.include_router(tickets_router)
 
 
 class Agent1Input(BaseModel):

@@ -29,6 +29,7 @@ const ProblemPayload = z.object({
 });
 
 const base = {
+  domain: z.enum(["IT", "non-IT"]),
   confidence: z.number().min(0).max(1),
   reasoning: z.string(),
 };

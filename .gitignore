@@ -1,9 +1,13 @@
 dist
 node_modules
+.venv
 .env
-*.env 
+*.env
 
 *.rough
 rough.txt
 
 __pycache__
+*.pyc
+.run/
+data/tickets.db*

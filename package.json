@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "tsx --env-file=.env src/index.ts",
+    "start": "tsx src/index.ts",
     "build": "tsc",
-    "start:prod": "node --env-file=.env dist/index.js"
+    "start:prod": "node dist/index.js"
   },
   "engines": {
     "node": ">=20.6"
